@@ -1,7 +1,6 @@
 from django.contrib.auth import authenticate, login
-from django.core.exceptions.ValidationError import messages
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 from .forms import UserRegisterForm
 
 
@@ -23,6 +22,8 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"You are now logged in as {user.username}")
+            messages.success(request, f"You are now logged in as {user.email}")
             return redirect('login')
+        else:
+            messages.error(request, "Invalid credentials")
     return render(request, 'accounts/login.html')
