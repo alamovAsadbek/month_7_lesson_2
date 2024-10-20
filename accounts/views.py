@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.core.exceptions.ValidationError import messages
 from django.shortcuts import render, redirect
 
 from .forms import UserRegisterForm
@@ -22,5 +23,6 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            messages.success(request, f"You are now logged in as {user.username}")
+            return redirect('login')
     return render(request, 'accounts/login.html')
